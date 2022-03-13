@@ -27,6 +27,9 @@ Users.init({
   uuid: {
     type: DataTypes.STRING
   },
+  nama: {
+    type: DataTypes.STRING
+  },
   pin: {
     type: DataTypes.TEXT
   },
@@ -36,16 +39,16 @@ Users.init({
   dob: {
       type: DataTypes.STRING
   },
-  mobile_number: {
+  mobileNumber: {
       type: DataTypes.STRING
   },
-  created_at: {
+  createdAt: {
     type: DataTypes.TIME,
   },
-  updated_at: {
+  updatedAt: {
     type: DataTypes.TIME,
   },
-  deleted_at: {
+  deletedAt: {
     type: DataTypes.TIME,
   },
 }, {
@@ -55,6 +58,7 @@ Users.init({
   paranoid: true,
   tableName: 'users',
   underscored: true,
+  mapToModel: true,
   modelName: 'Users' // We need to choose the model name
 });
 
