@@ -1,19 +1,18 @@
 -- mini_bank.account definition
 
 CREATE TABLE `account` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int DEFAULT NULL,
-  `balance` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `balance` decimal(25,2) DEFAULT NULL,
   `source_of_fund` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pupose_account` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `avg_monthly_income` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `avg_monthly_income` decimal(25,0) DEFAULT NULL,
   `occupation` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 
 -- mini_bank.balance_history definition
 
