@@ -5,11 +5,47 @@ const Redis = require('../config/redis');
 const { uuid } = require('uuidv4');
 const raw = require('body-parser/lib/types/raw');
 var jwt = require('jsonwebtoken');
+const { request } = require('chai');
 
 async function generateToken(data){
     const token = await jwt.sign(data, process.env.JWT_SECRET);
-    await Redis.set(`user-sessionj/${data.uuid}`, JSON.stringify({ token, ...data }), 'EX', 60 * 60 );
+    await Redis.set(`user-session/${data.uuid}`, JSON.stringify({ token, ...data }), 'EX', 60 * 60 );
     return token;
+}
+
+async function verifyJwt(req,res,next){
+    const header =req.headers.authorization;
+    if(header && header.startsWith('Bearer ')){
+        // tokens
+        const token = header.slice(7, header.length);
+        const secret = process.env.JWT_SECRET;
+        try {
+            const decodedToken = await jwt.verify(token, secret);
+            const [[errSession, foundSession], [errExpire]]  = await Redis.pipeline()
+              .get(`user-session/${decodedToken.uuid}`)
+              .expire(`user-session/${decodedToken.uuid}`,  60 * 60)
+              .exec();
+            if (errExpire) {
+              console.log(errExpire.message);
+              throw errExpire;
+            }
+            if (errSession) {
+              console.log(errSession.message);
+              throw errSession;
+            }
+            if (foundSession && JSON.parse(foundSession).token === token) {
+                console.log(foundSession)
+                next();
+            }else{
+                throw new Error('Session not found');
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(400).json({message : `Authentication failed! ${error.message}`}).end();
+        }
+    }else{
+        res.status(400).json({message : 'Missing Authentication Token'}).end();
+    }
 }
 
 async function getUsers(req,res) {
@@ -115,4 +151,4 @@ async function deleteUser(req, res) {
 }
 
 
-module.exports = {getUsers, login, updateUser, deleteUser, updateAccount};
+module.exports = {verifyJwt, getUsers, login, updateUser, deleteUser, updateAccount};
