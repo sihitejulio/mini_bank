@@ -1,0 +1,9 @@
+{"level":"error","service":"user-service"}
+{"level":"error","message":"Session not found","service":"user-service"}
+{"level":"error","message":"Session not found","service":"user-service"}
+{"level":"error","message":"Session not found","module":"user-service"}
+2022-03-20T04:20:33.829Z [31merror[39m: Session not found
+2022-03-20T04:21:10.244Z [31merror[39m: Session not found
+2022-03-20T04:21:58.741Z [31merror[39m: Session not found
+2022-03-20T04:25:45.501Z [31merror[39m: Session not found
+2022-03-20T04:27:07.166Z [31merror[39m: Session not found

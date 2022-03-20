@@ -1,0 +1,48 @@
+{"level":"info","message":"Example app listening on port 3010","service":"user-service"}
+{"level":"info","message":"Example app listening on port 3010","service":"user-service"}
+{"level":"error","service":"user-service"}
+{"level":"info","message":"Example app listening on port 3010","service":"user-service"}
+{"level":"error","message":"Session not found","service":"user-service"}
+{"level":"error","message":"Session not found","service":"user-service"}
+{"level":"info","message":"Example app listening on port 3010","module":"index"}
+{"level":"error","message":"Session not found","module":"user-service"}
+{"level":"info","message":"Example app listening on port 3010","module":"index","timestamp":"2022-03-20T04:08:48.942Z"}
+2022-03-20T04:13:12.683Z [32minfo[39m: 	Example app listening on port 3010
+2022-03-20T04:17:19.163Z [32minfo[39m: 	Example app listening on port 3010
+2022-03-20T04:18:11.894Z [32minfo[39m: 	Example app listening on port 3010
+2022-03-20T04:18:42.123Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:19:10.419Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:19:58.077Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:20:05.227Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:20:13.995Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:20:21.369Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:20:33.829Z [31merror[39m: Session not found
+2022-03-20T04:20:58.422Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:21:06.875Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:21:10.244Z [31merror[39m: Session not found
+2022-03-20T04:21:19.852Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:21:54.045Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:21:58.741Z [31merror[39m: Session not found
+2022-03-20T04:25:36.351Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:25:45.501Z [31merror[39m: Session not found
+2022-03-20T04:25:59.762Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:27:02.591Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:27:07.166Z [31merror[39m: Session not found
+2022-03-20T04:29:18.620Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:35:07.056Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:50:21.606Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:50:45.621Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:53:17.264Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:53:52.283Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:54:43.815Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:55:34.292Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:56:31.998Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:57:36.792Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:58:32.934Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T04:59:01.337Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T05:00:53.851Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T05:02:19.231Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T05:04:47.401Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T05:05:19.681Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T05:06:48.062Z [32minfo[39m: Example app listening on port 3010
+2022-03-20T05:07:11.340Z [32minfo[39m: Example app listening on port 3010

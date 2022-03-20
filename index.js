@@ -5,9 +5,11 @@ const bodyParser = require('body-parser');
 const expressHealthcheck = require('express-healthcheck');
 const { mini_bank } = require('./config/db');
 const app = express();
+const createLogger = require('./utils/logger');
 const port = process.env.PORT || 3010;
 const {users_route} = require('./router')
 
+const logger = createLogger('index');
       
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -32,7 +34,7 @@ app.use('/users', users_route);
 
 
 const server = app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  logger.info(`Example app listening on port ${port}`)
 })
 
 module.exports = server

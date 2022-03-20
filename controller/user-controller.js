@@ -6,10 +6,14 @@ const { uuid } = require('uuidv4');
 const raw = require('body-parser/lib/types/raw');
 var jwt = require('jsonwebtoken');
 const { request } = require('chai');
+const createLogger = require('../utils/logger');
+const { schemaUserUpdate } = require('../utils/joi-schema/user-schema');
+const logger = createLogger('user-service');
+
 
 async function generateToken(data){
     const token = await jwt.sign(data, process.env.JWT_SECRET);
-    await Redis.set(`user-session/${data.uuid}`, JSON.stringify({ token, ...data }), 'EX', 60 * 60 );
+    await Redis.set(`user-session/${data.uuid}`, JSON.stringify({ token, ...data }), 'EX', 60*60 );
     return token;
 }
 
@@ -23,24 +27,21 @@ async function verifyJwt(req,res,next){
             const decodedToken = await jwt.verify(token, secret);
             const [[errSession, foundSession], [errExpire]]  = await Redis.pipeline()
               .get(`user-session/${decodedToken.uuid}`)
-              .expire(`user-session/${decodedToken.uuid}`,  60 * 60)
+              .expire(`user-session/${decodedToken.uuid}`,  60*60)
               .exec();
             if (errExpire) {
-              console.log(errExpire.message);
               throw errExpire;
             }
             if (errSession) {
-              console.log(errSession.message);
               throw errSession;
             }
             if (foundSession && JSON.parse(foundSession).token === token) {
-                console.log(foundSession)
                 next();
             }else{
                 throw new Error('Session not found');
             }
         } catch (error) {
-            console.log(error);
+            if(error) logger.error(error.message);
             res.status(400).json({message : `Authentication failed! ${error.message}`}).end();
         }
     }else{
@@ -63,7 +64,6 @@ async function login(req, res, next){
             }
         })
         let token = null;
-        console.log(user);
         if(!user){
             const userUUID = uuid();
             await Users.create({mobileNumber, uuid: userUUID});
@@ -82,12 +82,16 @@ async function updateUser(req,res, next){
     const userUUID = req.params.uuid;
     try {
         const {nama, dob, city} = req.body;
+        const {error, value} = await schemaUserUpdate.validateAsync({ nama, dob, city});
+        if (error) throw error;
         const user = await Users.findOne({
             where: {
                 uuid: userUUID
             },
             raw: true
         })
+        console.log(user)
+        
         if(user){
             await Users.update({
                 nama,
@@ -104,22 +108,26 @@ async function updateUser(req,res, next){
             res.status(400).end();
         }    
     } catch (error) {
-        next(error);
+        res.status(400).json(error).end()
     }
 }
 
 async function updateAccount(user,req,res,next){
     try {
         const {sourceOfFund, puposeAccount, occupation, avgMonthlyIncome} = req.body;
-        const {userId} = user;
-        await Account.create({
-            userId,
-            sourceOfFund,
-            puposeAccount,
-            occupation,
-            avgMonthlyIncome
-        })
-        res.status(200).end();
+        if(user){
+            const {userId} = user;
+            await Account.create({
+                userId,
+                sourceOfFund,
+                puposeAccount,
+                occupation,
+                avgMonthlyIncome
+            })
+            res.status(200).end();
+        }else{
+            res.status(400).json({message : 'Not found'}).end();
+        }
     } catch (error) {
         next(error);
     }
