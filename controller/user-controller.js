@@ -7,7 +7,6 @@ const raw = require('body-parser/lib/types/raw');
 var jwt = require('jsonwebtoken');
 const { request } = require('chai');
 const createLogger = require('../utils/logger');
-const { schemaUserUpdate } = require('../utils/joi-schema/user-schema');
 const logger = createLogger('user-service');
 
 
@@ -82,15 +81,14 @@ async function updateUser(req,res, next){
     const userUUID = req.params.uuid;
     try {
         const {nama, dob, city} = req.body;
-        const {error, value} = await schemaUserUpdate.validateAsync({ nama, dob, city});
-        if (error) throw error;
+        // const {error, value} = await schemaUserUpdate.validateAsync({ nama, dob, city});
+        // if (error) throw error;
         const user = await Users.findOne({
             where: {
                 uuid: userUUID
             },
             raw: true
         })
-        console.log(user)
         
         if(user){
             await Users.update({
@@ -108,7 +106,9 @@ async function updateUser(req,res, next){
             res.status(400).end();
         }    
     } catch (error) {
-        res.status(400).json(error).end()
+        next(error);
+        console.log(error);
+        // res.status(400).json(error).end()
     }
 }
 

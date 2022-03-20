@@ -1,7 +1,10 @@
 const Joi = require('joi');
+const validator = require('express-joi-validation').createValidator({
+    passError: true
+});
 
 //user update
-const schemaUserUpdate = Joi.object({
+const schemaUserUpdateBody = Joi.object({
     nama: Joi.string()
         .min(3)
         .max(130)
@@ -11,7 +14,5 @@ const schemaUserUpdate = Joi.object({
     city: Joi.string()
           .required()
 })
-
-
 
 module.exports = {schemaUserUpdate}
