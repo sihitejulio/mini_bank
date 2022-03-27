@@ -7,7 +7,7 @@ class Users extends Model {
     const query = `
       SELECT
       *
-      FROM transaction;
+      FROM users;
     `;
     return this.sequelize.query(query, {
       // replacements: { loanId },

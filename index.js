@@ -30,11 +30,11 @@ const apiSpec = swaggerJsdoc({
       title: 'Hello World',
       version: '1.0.0',
     },
-    servers: {
-      ['- url']: '/v1'
-    } 
+    servers: [{
+      url:  '/v1'
+    }]
   },
-  apis: ['./api.yaml'], // files containing annotations as above
+  apis: ['./*-api.yaml'], // files containing annotations as above
 });
 
 fs.writeFile('api-swagger.yaml', yaml.dump(apiSpec), () => 0);
