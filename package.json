@@ -17,13 +17,17 @@
     "express": "^4.17.3",
     "express-healthcheck": "^0.1.0",
     "express-joi-validation": "^5.0.1",
+    "express-openapi-validator": "^4.13.7",
     "ioredis": "^4.28.5",
     "joi": "^17.6.0",
+    "js-yaml": "^4.1.0",
     "jsonwebtoken": "^8.5.1",
     "logform": "^2.4.0",
     "mocha": "^9.2.2",
     "mysql2": "^2.3.3",
     "sequelize": "^6.17.0",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.3.0",
     "uuidv4": "^6.2.12",
     "winston": "^3.6.0"
   }

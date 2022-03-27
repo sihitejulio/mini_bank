@@ -55,6 +55,7 @@ async function getUsers(req,res) {
 }
 
 async function login(req, res, next){
+
     const mobileNumber = req.body.mobileNumber;
     try {
         const user = await Users.findOne({
@@ -67,10 +68,10 @@ async function login(req, res, next){
             const userUUID = uuid();
             await Users.create({mobileNumber, uuid: userUUID});
             token = await generateToken({uuid: userUUID});
-            res.status(201).json(token);
+            res.status(201).json({token});
         }else{
             token = await generateToken({uuid: user.uuid});
-            res.status(200).json(token).end()
+            res.status(200).json({token});
         }
     } catch (error) {
         next(error)   
