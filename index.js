@@ -1,18 +1,35 @@
 
 require('dotenv').config()
 const express = require('express');
+const Queue = require('bull')
 const path = require('path');
 const bodyParser = require('body-parser');
 const expressHealthcheck = require('express-healthcheck');
 const { mini_bank } = require('./config/db');
 const app = express();
 const createLogger = require('./utils/logger');
+const userQueue = require('./service/user-service');
+
 const port = process.env.PORT || 3010;
 const {users_route} = require('./router')
 const OpenApiValidator = require('express-openapi-validator');
 const swaggerUi = require('swagger-ui-express');
 const yaml  = require('js-yaml');
 const fs = require('fs');
+
+const { createBullBoard } = require('@bull-board/api')
+const { BullAdapter } = require('@bull-board/api/bullAdapter')
+const { ExpressAdapter } = require('@bull-board/express')
+
+const someQueue = new Queue('someQueueName')
+const serverAdapter = new ExpressAdapter();
+
+const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
+  queues: [
+    new BullAdapter(userQueue),
+  ],
+  serverAdapter:serverAdapter
+})
 
 const swaggerJsdoc = require('swagger-jsdoc');
 // const { schemaUserUpdate } = require('./utils/joi-schema/user-schema');
@@ -53,12 +70,15 @@ app.use(
     apiSpec,
     validateApiSpec: true,
     validateRequests: true, // (default)
-    validateResponses: true, // false by default
+    validateResponses: false, // false by default
   }),
 );
 
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(apiSpec));
+
+serverAdapter.setBasePath('/admin/queues')
+app.use('/admin/queues', serverAdapter.getRouter());
 
 app.use('/healthcheck', expressHealthcheck({
     healthy: () => ({ status: 'ok' }),

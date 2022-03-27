@@ -26,6 +26,15 @@
                 token:
                   type: string
 
+/users/{uuid}:
+  put:
+    tags: 
+      - user
+    summary: Put User   
+    responses:
+      '200':
+        description: Ok
+
 /users/all:
   get:
     tags: 

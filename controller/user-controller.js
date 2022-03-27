@@ -7,12 +7,13 @@ const raw = require('body-parser/lib/types/raw');
 var jwt = require('jsonwebtoken');
 const { request } = require('chai');
 const createLogger = require('../utils/logger');
+const userQueue = require('../service/user-service');
 const logger = createLogger('user-service');
 
 
 async function generateToken(data){
     const token = await jwt.sign(data, process.env.JWT_SECRET);
-    await Redis.set(`user-session/${data.uuid}`, JSON.stringify({ token, ...data }), 'EX', 60*60 );
+    await Redis.set(`user-session/${data.uuid}`, JSON.stringify({ token, ...data }), 'EX', 60*60*60 );
     return token;
 }
 
@@ -26,7 +27,7 @@ async function verifyJwt(req,res,next){
             const decodedToken = await jwt.verify(token, secret);
             const [[errSession, foundSession], [errExpire]]  = await Redis.pipeline()
               .get(`user-session/${decodedToken.uuid}`)
-              .expire(`user-session/${decodedToken.uuid}`,  60*60)
+              .expire(`user-session/${decodedToken.uuid}`,  60*60*60)
               .exec();
             if (errExpire) {
               throw errExpire;
@@ -81,7 +82,8 @@ async function login(req, res, next){
 async function updateUser(req,res, next){
     const userUUID = req.params.uuid;
     try {
-        const {nama, dob, city} = req.body;
+        const {nama, dob, city, sourceOfFund, puposeAccount, occupation, avgMonthlyIncome} = req.body;
+
         // const {error, value} = await schemaUserUpdate.validateAsync({ nama, dob, city});
         // if (error) throw error;
         const user = await Users.findOne({
@@ -102,7 +104,9 @@ async function updateUser(req,res, next){
                 },
                 logging: true
             });
-            next({userId: user.id});
+            // next({userId: user.id});
+            userQueue.add({userId: user.id, sourceOfFund, puposeAccount, occupation, avgMonthlyIncome });
+            res.status(200).end();
         }else{
             res.status(400).end();
         }    
