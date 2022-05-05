@@ -2,6 +2,7 @@
 require('dotenv').config()
 const express = require('express');
 const Queue = require('bull')
+const cors = require('cors')
 const path = require('path');
 const bodyParser = require('body-parser');
 const expressHealthcheck = require('express-healthcheck');
@@ -57,6 +58,7 @@ const apiSpec = swaggerJsdoc({
 fs.writeFile('api-swagger.yaml', yaml.dump(apiSpec), () => 0);
 // parse application/x-www-form-urlencoded
 // app.use(bodyParser.urlencoded({ extended: false }))
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.text());
 app.use(express.json());
