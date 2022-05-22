@@ -17,6 +17,16 @@ async function generateToken(data){
     return token;
 }
 
+async function generateOtp(uuid){
+    const newData = {
+        otp: '',
+        challangeCode: '',
+        mobileNumber: '',
+    }
+    await Redis.set(`user-session/${uuid}/otp`, JSON.stringify(newData), 'EX', 60*60*60 );
+    return newData;
+}
+
 async function verifyJwt(req,res,next){
     const header =req.headers.authorization;
     if(header && header.startsWith('Bearer ')){
@@ -68,8 +78,8 @@ async function login(req, res, next){
         if(!user){
             const userUUID = uuid();
             await Users.create({mobileNumber, uuid: userUUID});
-            token = await generateToken({uuid: userUUID});
-            res.status(201).json({token});
+            const result = await generateOtp({userUUID});
+            res.status(201).json({otp: result.otp , challangeCode: result.challangeCode});
         }else{
             token = await generateToken({uuid: user.uuid});
             res.status(200).json({token});
@@ -78,6 +88,25 @@ async function login(req, res, next){
         next(error)   
     }
 }
+
+async function verifyOtp(req, res, next){
+    const {otp, challangeCode, mobileNumber} = req.body;
+    try {
+        const user = await Users.findOne({
+            where: {
+                mobileNumber
+            }
+        })
+        if(user && otp){
+            token = await generateToken({uuid: userUUID});
+            res.status(201).json({token});
+        }
+    } catch (error) {
+        next(error)   
+    }
+}
+
+
 
 async function updateUser(req,res, next){
     const userUUID = req.params.uuid;
