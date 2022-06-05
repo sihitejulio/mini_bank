@@ -58,4 +58,4 @@ jobs:
           script: | 
             ls -lha
             cd deployment
-            bash deployment.sh
+            bash deployment-bank_1.sh
