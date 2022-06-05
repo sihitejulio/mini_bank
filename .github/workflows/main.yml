@@ -43,5 +43,6 @@ jobs:
           # connection timeout to remote host
           #connect_timeout: # optional, default is 30s
           # execute commands on ssh
-          script: | ls -lha
-          echo $WELCOME 
+          script: | 
+            ls -lha
+            echo $WELCOME 
