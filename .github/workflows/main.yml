@@ -45,4 +45,5 @@ jobs:
           # execute commands on ssh
           script: | 
             ls -lha
-            echo $WELCOME 
+            (cd docker-example/get_release || true)
+            (bash bash.sh || true)
